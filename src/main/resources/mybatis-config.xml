@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <!-- 该该包下的实体类注册一个别名，当指定之后，该包下的实体类都会注册别名，
+    并且类名就是别名，不再区分大小写
+     这样在mapper.xml中写sql语句时，返回值可以直接写实体类，不区分大小写，并且不用带包名
+      -->
+    <typeAliases>
+        <package name="yukaixin.pojo"/>
+    </typeAliases>
+
+    <!--    environment:配置数据库连接环境信息，可以配置多个environment，通过default属性切换不同的environment-->
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <!-- 数据库连接信息 -->
+                <property name="driver" value="com.mysql.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://127.0.0.1:3306/mybatis?useSSL=false"/>
+                <property name="username" value="root"/>
+                <property name="password" value="1234"/>
+            </dataSource>
+        </environment>
+
+        <environment id="test">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <!-- 数据库连接信息 -->
+                <property name="driver" value="com.mysql.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://127.0.0.1:3306/mybatis?useSSL=false"/>
+                <property name="username" value="root"/>
+                <property name="password" value="1234"/>
+            </dataSource>
+        </environment>
+
+    </environments>
+
+    <mappers>
+        <!--         加载sql映射文件 -->
+        <!--                <mapper resource="yukaixin.mapper.UserMapper.xml" />-->
+
+        <!-- mapper代理方式 -->
+        <package name="yukaixin.mapper"/>
+    </mappers>
+
+
+</configuration>

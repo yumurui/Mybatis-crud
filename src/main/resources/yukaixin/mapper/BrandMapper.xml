@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="yukaixin.mapper.BrandMapper">
+
+    <resultMap id="brandResultMap" type="brand">
+        <result property="brandName" column="brand_name" />
+        <result property="companyName" column="company_name" />
+    </resultMap>
+
+
+
+    <!-- 查找所有用户的信息   -->
+
+<!--    <select id="findAll" resultType="yukaixin.pojo.Brand">-->
+    <select id="findAll" resultMap="brandResultMap">
+        select * from tb_brand;
+    </select>
+
+    <!-- 根据id查找用户的信息   -->
+    <select id="findByID" resultMap="brandResultMap">
+        select * from tb_brand where id = #{id};
+    </select>
+
+    <!--  多条件同时成立进行查询  -->
+    <select id="findByConditions" resultMap="brandResultMap">
+        select * from tb_brand
+        where status = #{status}
+          and brand_name like #{brandName}
+          and company_name like #{companyName};
+    </select>
+
+    <select id="findByConditions2" resultMap="brandResultMap">
+        select * from tb_brand
+        where status = #{status}
+          and brand_name like #{brandName}
+          and company_name like #{companyName};
+    </select>
+
+    <select id="findByConditions3" resultMap="brandResultMap">
+        select * from tb_brand
+        where status = #{status}
+          and brand_name like #{brandName}
+          and company_name like #{companyName};
+    </select>
+
+    <select id="findByConditionsDynamic" resultMap="brandResultMap">
+        select * from tb_brand
+        <where>
+            <if test="status != null"> status = #{status} </if>
+            <if test="brandName != null and brandName != ''">
+              and brand_name like #{brandName}
+            </if>
+            <if test="companyName != null and brandName != ''">
+              and company_name like #{companyName}
+            </if>
+        </where>
+    </select>
+
+
+    <select id="findByConditionSingle" resultMap="brandResultMap">
+        select * from tb_brand
+        <where>
+            <choose>
+                <when test="status != null"> status = #{status} </when>
+                <when test="brandName != null and brandName != ''"> brand_name like #{brandName} </when>
+                <when test="companyName != null and companyName != ''"> company_name like #{companyName} </when>
+            </choose>
+        </where>
+    </select>
+
+    <insert id="addBrand" keyProperty="id" useGeneratedKeys="true">
+        insert into tb_brand (brand_name, company_name, ordered, description, status)
+        values (#{brandName}, #{companyName}, #{ordered}, #{description}, #{status});
+    </insert>
+
+    <update id="updateBrand">
+        update tb_brand
+        set brand_name = #{brandName}, company_name = #{companyName}, ordered = #{ordered},
+            description = #{description}, status = #{status}
+        where id = #{id};
+    </update>
+    <update id="updateBrandDynamic">
+        update tb_brand
+        <set>
+            <if test="brandName != null and brandName != ''">brand_name = #{brandName},</if>
+            <if test="companyName != null and companyName != ''">company_name = #{companyName},</if>
+            <if test="ordered != null">ordered = #{ordered},</if>
+            <if test="description != null and description != ''">description = #{description},</if>
+            <if test="status != null">status = #{status}</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBrandByID">
+        delete from tb_brand where id = #{id};
+    </delete>
+    <delete id="deleteBrands">
+        delete from tb_brand where id
+        in (
+            <foreach collection="ids" item="id" separator=",">
+                #{id}
+            </foreach>
+                                       )
+    </delete>
+
+</mapper>
